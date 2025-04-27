@@ -1,6 +1,5 @@
 
 require "vector"
-require "card"
 
 GrabberClass = {}
 
@@ -9,11 +8,11 @@ function GrabberClass:new()
   local metadata = {__index = GrabberClass}
   setmetatable(grabber, metadata)
   
-  grabber.previousMousePos = nil
+  grabber.previousCardPos = nil
   grabber.currentMousePos = nil
-  
   grabber.grabPos = nil
   
+  grabber.grabbing = false
   grabber.heldObject = nil
   
   return grabber
@@ -24,7 +23,7 @@ function GrabberClass:update()
     love.mouse.getX(), 
     love.mouse.getY())
   -- click
-  if love.mouse.isDown(1) and self.grabPos == nil then
+  if love.mouse.isDown(1) then
     self:grab()
   end
   if not love.mouse.isDown(1) and self.grabPos ~= nil then
@@ -33,13 +32,14 @@ function GrabberClass:update()
 end
 
 function GrabberClass:grab()
-  self.grabPos = self.currentMousePosition
-  
-  print("Grabbed at " .. tostring(self.grabPos))
+ if (self.grabbing == false) then
+   self.grabbing = true
+ end
+ self.grabPos = self.currentMousePos
 end
 
 function GrabberClass:release()
-  print("Released at " .. tostring(self.grabPos))
   self.grabPos = nil
   self.heldObject = nil
+  self.grabbing = false
 end
