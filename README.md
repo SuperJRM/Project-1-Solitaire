@@ -1,11 +1,5 @@
-# Project 1-Solitaire
--- Jason Rangel-Martinez
--- CMPM 121 - Solitaire
--- 4-18-25
-
-I'm still working on the project. Thank you for your patience.
-
-
+-- Jason Rangle-Martinez
+-- CMPM 121 - Solitaire Project
 -- 4/26/25
 
 1. Progrmming Patterns Used:
@@ -17,3 +11,5 @@ I'm still working on the project. Thank you for your patience.
     - I based the code off of what was taught in lecture and during section, especially the vector.lua information.
     - All other code was made by me.
     - No external assets were used.
+
+    

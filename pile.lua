@@ -5,7 +5,7 @@ PileClass = {}
 
 PILE_TYPE = {
   DRAW = 0,
-  PLAT = 1,
+  PLATEAU = 1,
   SUIT = 2
 }
 
@@ -28,7 +28,7 @@ function PileClass:update()
 end
 
 -- Checks if mouse is over a card, grabbing it or otherwise
-function PileClass:checkForMouseOver(grabber, cardTable)
+function PileClass:checkForMouseOver(grabber, gameTable)
   if self.cardList ~= nil and #self.cardList > 0 then
     endCard = self.cardList[#self.cardList]
     
@@ -37,7 +37,7 @@ function PileClass:checkForMouseOver(grabber, cardTable)
       -- If grabber is no longer holding said card
       if grabber.grabbing == false then
         endCard.state = CARD_STATE.IDLE
-        newPile = self:checkForPile(cardTable)
+        newPile = self:checkForPile(gameTable)
         if newPile[#newPile] ~= endCard then
           print(newPile[#newPile].position.x)
           print(endCard.position.x)
@@ -58,12 +58,7 @@ function PileClass:checkForMouseOver(grabber, cardTable)
     -- If grabber is not holding card, change card state/become grabbed 
     if grabber.heldObject == nil then
       local mousePos = grabber.currentMousePos
-      local isMouseOver = 
-      mousePos.x > endCard.position.x and 
-      mousePos.x < endCard.position.x + endCard.size.x and
-      mousePos.y > endCard.position.y and 
-      mousePos.y < endCard.position.y + endCard.size.y
-      
+      local isMouseOver = isOverTarget(mousePos, endCard, 0)
       endCard.state = isMouseOver and CARD_STATE.MOUSE_OVER or CARD_STATE.IDLE
       
       if endCard.state == CARD_STATE.MOUSE_OVER and grabber.grabbing == true then
@@ -76,19 +71,15 @@ function PileClass:checkForMouseOver(grabber, cardTable)
 end
 
 -- Checks if grabbed card overlaps a new pile upon release
-function PileClass:checkForPile(cardTable)
-  cardOverlap = false
-  for _, tableau in ipairs(cardTable) do
+function PileClass:checkForPile(gameTable)
+  for _, tableau in ipairs(gameTable) do
     if #tableau.cardList > 0 and self.cardList ~= tableau.cardList then
       heldCardPos = self.cardList[#self.cardList].position
+      heldCardSize = self.cardList[#self.cardList].size.x
       checkedPile = tableau.cardList
-      -- pilePos = tableau.cardList[#tableau.cardList]
       pilePos = checkedPile[#checkedPile]
-      local isCardOver = 
-        heldCardPos.x > pilePos.position.x and 
-        heldCardPos.x < pilePos.position.x + pilePos.size.x and
-        heldCardPos.y > pilePos.position.y and 
-        heldCardPos.y < pilePos.position.y + pilePos.size.y
+      
+      local isCardOver = isOverTarget(heldCardPos, pilePos, heldCardSize)
       if isCardOver == true then
         return checkedPile
       end
