@@ -1,4 +1,4 @@
--- Jason Rangle-Martinez
+-- Jason Rangel-Martinez
 -- CMPM 121 - Solitaire Project
 -- 4/26/25
 
@@ -12,4 +12,9 @@
     - All other code was made by me.
     - No external assets were used.
 
-    
+
+-- Jason Rangel-Martinez
+-- CMPM 121 - Solitaire Project
+-- 5/7/25
+
+I'm still working on project 2. Thank you for your patience.
