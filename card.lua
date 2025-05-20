@@ -35,6 +35,7 @@ function CardClass:draw()
     love.graphics.rectangle("fill", self.position.x + offset, self.position.y + offset, self.size.x, self.size.y, 6, 6)
   end
   
+  -- Draws outline card design for empty piles
   if self.state == CARD_STATE.OUTLINE then
     love.graphics.setColor(0, 0.7, 0.2, 1)
     love.graphics.rectangle("fill", self.position.x, self.position.y, self.size.x, self.size.y, 6, 6)
@@ -43,6 +44,7 @@ function CardClass:draw()
     return
   end
   
+  -- Draws cards designs
   if self.flipped == false then
     love.graphics.setColor(0,0,150,1)
   else

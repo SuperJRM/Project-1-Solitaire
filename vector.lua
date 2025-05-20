@@ -1,4 +1,4 @@
--- Got from class, except for div which was inspired by the others
+-- Got from lecture, except for div which was inspired by the others
 
 Vector = {}
 

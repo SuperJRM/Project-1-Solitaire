@@ -9,7 +9,7 @@ function GrabberClass:new()
   setmetatable(grabber, metadata)
   
   grabber.currentMousePos = Vector(0,0)
-  grabber.heldObject = nil  -- Should be table otherwise
+  grabber.heldObject = nil
   grabber.currentPile = nil
   grabber.pastPile = nil
   grabber.onCooldown = false
@@ -62,12 +62,8 @@ function GrabberClass:grab()
       -- Replaces Draw Pile
       if (self.currentMousePos.x > 100 and self.currentMousePos.x < 150) and
       (self.currentMousePos.y > 125 and self.currentMousePos.y < 195) and self.onCooldown == false then
-      --if isOverTarget(self.currentMousePos, cardDeck[1], 0) and self.onCooldown == false then
-        print(#self.currentPile.cardList)
         for i = 2, #self.currentPile.cardList do
           endCard = table.remove(self.currentPile.cardList)
-          print("Draw Wipe")
-          print(endCard)
           endCard.state = CARD_STATE.IDLE
           endCard.flipped = false
           endCard.position = Vector(100, 125)
@@ -95,6 +91,15 @@ function GrabberClass:grab()
         self.pastPile = self.currentPile
         self.heldObject = hand
       end
+      
+    -- If no pile is selected
+    else
+      -- Reset Button
+      if (self.currentMousePos.x > 50 and self.currentMousePos.x < 100) and
+      (self.currentMousePos.y > 50 and self.currentMousePos.y < 75) and self.onCooldown == false then
+        setUpBoard()
+        return
+      end
     end
   end
 end
@@ -117,6 +122,8 @@ function GrabberClass:release()
       end
       self.pastPile:update()
       self.heldObject = nil
+
+    -- Returns held cards to previous position if new one is invalid
     else
       for i = #self.heldObject, 1, -1 do
         endCard = table.remove(self.heldObject)
@@ -131,6 +138,7 @@ function GrabberClass:release()
       end
       self.heldObject = nil
     end
+
   -- Changes card states within current pile
   else
     if self.currentPile ~= nil then
@@ -145,5 +153,3 @@ function GrabberClass:release()
     end
   end
 end
--- Checks if mouse is over a card, grabbing it or otherwise
---function GrabberClass:checkForMouseOver(gameTable, GrabberClass)

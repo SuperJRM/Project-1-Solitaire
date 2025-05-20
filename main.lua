@@ -9,7 +9,8 @@ require "grabber"
 require "pile"
 
 function love.load()
-  love.window.setMode(960,640)
+  love.window.setTitle("Solitaire Project")
+  love.window.setMode(960, 640)
   love.graphics.setBackgroundColor(0, 0.7, 0.2, 1)
   
   winCheck = false
@@ -18,14 +19,24 @@ function love.load()
 end
 
 function love.draw()
+  love.graphics.setColor(1,1,1,1)
+  font = love.graphics.newFont(16)
+  love.graphics.setFont(font)
+  love.graphics.print("Reset", 50, 50)
+  
+  -- Checks win condition
   if winCheck == true then
-    love.graphics.setColor(1,1,1,1)
+    font = love.graphics.newFont(64)
+    love.graphics.setFont(font)
     love.graphics.print("You Win!", 400, 400)
+  else
+    love.graphics.print("", 400, 400)
   end
+  
+  -- Draws all cards
   for i, card in ipairs(cardDeck) do
     card:draw()
   end
-    
   for _, tableau in ipairs(gameTable) do
     for i, card in ipairs(tableau.cardList) do
       card:draw()
@@ -51,7 +62,6 @@ function checkForMouseMoving()
   end
   for _, tableau in ipairs(gameTable) do
     tableau:checkForMouseOver(grabber, gameTable)
-    --grabber:checkForMouseOver(grabber, gameTable)
   end
 end
 
@@ -59,10 +69,6 @@ function setUpBoard()
   winCheck = false
   cardDeck = {} 
   gameTable = {}
-  
-  -- Fills the deck with cards + deck outline
-  deckOutline = CardClass:new(100, 125)
-  deckOutline.state = CARD_STATE.OUTLINE
   fillDeck(cardDeck)
   
   -- Creates draw and tableau pile tables, filling the tableaus only
@@ -105,7 +111,7 @@ function setUpBoard()
   end
 end
 
--- Fills deck with cards, may shuffle cards later
+-- Fills deck with cards
 function fillDeck(deck)
   for i = 1, 52 do
     table.insert(deck, CardClass:new(100, 125))
@@ -123,15 +129,15 @@ end
 
 function love.update()
   endCheck = 0
+  -- Win condition check
   for _, tableau in ipairs(gameTable) do
-    for _, card in ipairs(tableau.cardList) do
-      card:update()
-    end
     if tableau.pileType == PILE_TYPE.SUIT and #tableau.cardList > 12 then
       endCheck = endCheck + 1
     end
     if endCheck > 3 then
       winCheck = true
+    else
+      winCheck = false
     end
   end
   grabber:update()
